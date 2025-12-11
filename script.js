@@ -3,10 +3,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const videos = document.querySelectorAll('.video');
     const container = document.querySelector('.video-container');
     
+    // Track if audio has been enabled
+    let audioEnabled = false;
+    
+    // Function to enable audio on all videos
+    function enableAudio() {
+        if (!audioEnabled) {
+            audioEnabled = true;
+            videos.forEach(video => {
+                video.muted = false;
+            });
+        }
+    }
+    
+    // Enable audio on first user interaction
+    const enableAudioEvents = ['click', 'touchstart', 'keydown'];
+    enableAudioEvents.forEach(eventType => {
+        document.addEventListener(eventType, enableAudio, { once: true, passive: true });
+    });
+    
     // Initialize first video with entrance animation
     const firstVideo = videos[0];
     
-    // Play first video on load
+    // Play first video on load (muted for autoplay)
     firstVideo.play().catch(err => {
         console.log('Autoplay prevented:', err);
     });
